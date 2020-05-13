@@ -1,35 +1,23 @@
-import React, {Component} from 'react';
-import {Navbar,NavbarBrand} from 'reactstrap'
+import React, { Component } from 'react';
 import './App.css';
-import Menu from './components/MenuComponent';
-import { DISHES } from "./shared/dishes";
+import Main from './components/MainComponent';
 
 class App extends Component {
 
-  constructor(props) {
-    super(props);
-  this.state = {
-    dishes : DISHES
-  };
-}
-
-
+  //Note that we have changed/inserted the list of dishes in parent component 
   //This will create a empty navigation bar at the top
   //This will create a bootStrap container with some predefined CSS
   //Inside this container there is a navigation brand component 
+  
+  
   render() {
     return (
       <div className="App">
-        <Navbar dark color = "primary"> 
-          <div className = "container">
-            <NavbarBrand href = "/">Ristorante Con Fusion</NavbarBrand>
-          </div>
-        </Navbar>
-        <Menu dishes  = {this.state.dishes}/>
+        <Main />
       </div>
     );
   }
-  
+
 }
 
 export default App;
