@@ -1,20 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import Main from './components/MainComponent';
-
+import { BrowserRouter } from 'react-router-dom'
 class App extends Component {
 
-  //Note that we have changed/inserted the list of dishes in parent component 
-  //This will create a empty navigation bar at the top
-  //This will create a bootStrap container with some predefined CSS
-  //Inside this container there is a navigation brand component 
-  
-  
+ // since we dont want any state of app components so no constructor
+ 
   render() {
     return (
-      <div className="App">
-        <Main />
-      </div>
+      /**Alias for Router and parent of all Route components 
+       * NOTE : It has only one child
+       */
+      <BrowserRouter>
+        <div className="App">        
+          <Main /> {/* We will call the main component just like main method */}
+        </div>
+      </BrowserRouter>
     );
   }
 

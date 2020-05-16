@@ -1,48 +1,78 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand } from 'reactstrap';
 import Menu from './MenuComponent';
 import { DISHES } from "../shared/dishes";
 import DishDetail from './DishdetailComponent';
+import Header from './HeaderComponent';
+import Footer from './FooterComponent';
+import { Switch, Route, Redirect } from "react-router-dom";
+import Home from './HomeComponent';
+import Contact from './ContactComponent';
+import { COMMENTS } from '../shared/comments';
+import { PROMOTIONS } from '../shared/promotions';
+import { LEADERS } from '../shared/leaders';
+import About from './AboutComponent';
 
 class Main extends Component {
 
     /**
-     * this consttuctor will set state of the current instant
-     * 
      * Initailly State of Dishes is set to be total dishes we have 
-     *  and selected dish is null 
+     *  and @param{selectedDish}is null 
      */
     constructor(props) {
         super(props);
         this.state = {
             dishes: DISHES,
-            selectedDish: null
-        };
+            comments: COMMENTS,
+            promotions: PROMOTIONS,
+            leaders: LEADERS
+          };
     }
 
     /**
-     * 
-     * @param {} dishID 
-     * this will set the state of selected dish to the dishID 
+     * this will render a header footer and a component on the basis of the url 
      */
-    onDishSelect(dishID) {
-        this.setState({ selectedDish: dishID });
-    }
-
-
     render() {
+        //just to make code more readable
+        const HomePage = () => {
+            return(
+                <Home 
+                    dish={this.state.dishes.filter((dish) => dish.featured)[0]}
+                    promotion={this.state.promotions.filter((promo) => promo.featured)[0]}
+                    leader={this.state.leaders.filter((leader) => leader.featured)[0]}
+                />
+            );
+        }
+        //just to make code more readable
+        const DishWithId = ({match}) => {
+            return(
+                <DishDetail selectedDish = {this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId,10))[0]} 
+                comments = {this.state.comments.filter((comment) => comment.dishId === parseInt(match.params.dishId,10))}
+                />
+            );
+        }
+         //A functional component that will render Home page 
+        //nClick={(dishId) => this.onDishSelect(dishId)}
         return (
             <div>
-                <Navbar dark color="primary">
-                    <div className="container">
-                        <NavbarBrand href="/">Ristorante Con Fusion</NavbarBrand>
-                    </div>
-                </Navbar>
-                <Menu dishes={this.state.dishes} onClick= {(dishID) => this.onDishSelect(dishID)} />
-                <DishDetail selectedDish={this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+                <Header />
+                {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
+                <Switch>
+                    {/* since calling Home component here directly is too long so we used sfunctions*/}
+                    <Route path="/home" component={HomePage} />
+                    {/* if something is to be passed with props then this syntex will help */}
+                    <Route exact path="/menu" component={() => <Menu dishes={this.state.dishes} />} />
+                    
+                    <Route exact path = "/contactus" component = {Contact} /> 
+                    
+                    <Route path = "/menu/:dishId" component = {DishWithId} />
+
+                    <Route exact path ="/aboutus" component = { () => <About leaders = {this.state.leaders}/> } />
+                    {/* Otherwise will redirect to home Componet or will redirect to /home */}
+                    <Redirect to="/home" />
+                </Switch>
+                <Footer />
             </div>
         );
     }
 }
-
 export default Main;
