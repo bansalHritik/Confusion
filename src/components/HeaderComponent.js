@@ -52,6 +52,7 @@ class Header extends Component {
   }
   render() {
     return (
+      //we have used fragment because of multiple children and fragment behaves as parent
       <React.Fragment>
         <Navbar dark expand="md">
           <div className=" container">
@@ -99,6 +100,9 @@ class Header extends Component {
             </Collapse>
           </div>
         </Navbar>
+        {
+          //! Navigation Bar ends here
+        }
         <Jumbotron>
           <div className="container">
             <div className="row row-header">
@@ -113,6 +117,7 @@ class Header extends Component {
             </div>
           </div>
         </Jumbotron>
+
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
           <ModalBody>
@@ -124,7 +129,7 @@ class Header extends Component {
                   id="username"
                   name="username"
                   innerRef={(input) => (this.username = input)}
-                /> 
+                />
               </FormGroup>
               <FormGroup>
                 <Label htmlFor="password">Password</Label>
