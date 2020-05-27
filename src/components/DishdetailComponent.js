@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -17,6 +17,8 @@ import {
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Control, Errors } from "react-redux-form";
+import { Loading } from './LoadingComponent';
+import { baseUrl } from "../shared/baseUrl";
 
 
 // for validation of form 
@@ -24,6 +26,20 @@ const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
 
+
+function RenderDish({ dish }) {
+  return (
+    <div className="col-12 col-md-5 m-1">
+      <Card>
+        <CardImg width="100%" src={baseUrl +dish.image} alt={dish.name} />
+        <CardBody>
+          <CardTitle>{dish.name}</CardTitle>
+          <CardText>{dish.description}</CardText>
+        </CardBody>
+      </Card>
+    </div>
+  );
+}
 class CommentForm extends Component {
 
   constructor(props) {
@@ -38,17 +54,19 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values) {
-    alert("Current state is " + JSON.stringify(values));
-  }
+    this.props.postComment(this.props.dishId,values.rating,values.author,values.comment)
+    }
 
   toggleModal() {
-    this.setState({ isModalOpen: !this.state.isModalOpen });
+    this.setState({ 
+      isModalOpen: !this.state.isModalOpen
+     });
   }
 
   render() {
     return (
       //fragment is used because of render returns only one element
-      <Fragment>
+      <div>
         <Button outline onClick={this.toggleModal}>
           {/** Pencil Icon */}
           <span className="fa fa-pencil fa-lg"></span> Submit Comment
@@ -89,7 +107,7 @@ class CommentForm extends Component {
                     className="form-control"
                     validators={{
                       required,
-                      minLength: minLength(2),
+                      minLength: minLength(3),
                       maxLength: maxLength(15),
                     }}
                   />
@@ -120,7 +138,7 @@ class CommentForm extends Component {
                 </Col>
               </Row>
               <Row className="form-group">
-                <Col md={{ size: 10, offset: 2 }}>
+                <Col md={ { size: 10, offset: 2 }}>
                   <Button type="submit" color="primary">
                     Submit
                   </Button>
@@ -129,11 +147,11 @@ class CommentForm extends Component {
             </LocalForm>
           </ModalBody>
         </Modal>
-      </Fragment>
+      </div>
     );
   }
 }
-function RenderComments({ comments }) {
+function RenderComments({ comments, postComment, dishId }) {
   if (comments == null) {
     return <div></div>;
   }
@@ -156,28 +174,33 @@ function RenderComments({ comments }) {
     <div className="col-12 col-md-5 m-1">
       <h4> Comments </h4>
       <ul className="list-unstyled">{cmnts}</ul>
-      <CommentForm />
+      <CommentForm dishId = {dishId} postComment = {postComment}/>
     </div>
   );
 }
 
-function RenderDish({ dish }) {
-  return (
-    <div className="col-12 col-md-5 m-1">
-      <Card>
-        <CardImg width="100%" src={dish.image} alt={dish.name} />
-        <CardBody>
-          <CardTitle>{dish.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
-    </div>
-  );
-}
 
 const Dishdetail = (props) => {
   const selectedDish = props.selectedDish;
-  if (selectedDish == null) {
+  if(props.isLoading) {
+    return(
+      <div className = "container">
+        <div className = "row">
+          <Loading />
+        </div>
+      </div>
+    );
+  }
+  else if(props.errMess) {
+    return(
+      <div className = "container">
+        <div className = "row">
+          <h4>{props.errMess}</h4>
+        </div>
+      </div>
+    );
+  }
+  else if (selectedDish == null) {
     return <div></div>;
   }
 
@@ -197,7 +220,9 @@ const Dishdetail = (props) => {
       </div>
       <div className="row">
         <RenderDish dish={props.selectedDish} />
-        <RenderComments comments={props.comments} />
+        <RenderComments comments={props.comments} 
+        postComment={props.postComment}
+        dishId = {props.selectedDish.id}/>
       </div>
     </div>
   );

@@ -16,15 +16,13 @@ class App extends Component {
 
   render() {
     return (
-      <Provider store={store}>
-        {
-          /**Alias for Router and parent of all Route components
-         * NOTE : It has only one child and it must be parent of all and has only one child*/
-        }
+      <Provider store={store}> 
+        {/**Alias for Router and parent of all Route components
+         * NOTE : It has only one child and it must be parent of all and has only one child*/}
         <BrowserRouter>
           <div className="App">
             {/**  */}
-            <Main />{" "}
+            <Main />
             {/* We will call the main component just like main method */}
           </div>
         </BrowserRouter>

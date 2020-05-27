@@ -17,7 +17,7 @@ import {
   Input,
 } from "reactstrap";
 import { NavLink } from "react-router-dom";
-
+// ?
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -117,16 +117,17 @@ class Header extends Component {
             </div>
           </div>
         </Jumbotron>
-
+        {/* MODEL for Login */}
         <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal}>
           <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
           <ModalBody>
+            {/* Uses React-Strap Form */}
             <Form onSubmit={this.handleLogin}>
               <FormGroup>
                 <Label htmlFor="username">Username</Label>
                 <Input
                   type="text"
-                  id="username"
+                  id="username" // ? for unique identification
                   name="username"
                   innerRef={(input) => (this.username = input)}
                 />
@@ -136,6 +137,7 @@ class Header extends Component {
                 <Input
                   type="password"
                   id="password"
+      // TODO : What is innerRef
                   innerRef={(input) => (this.password = input)}
                   name="password"
                 />
