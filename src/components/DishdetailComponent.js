@@ -14,34 +14,40 @@ import {
   Label,
   Row,
   Col,
+  Fade,
 } from "reactstrap";
 import { Link } from "react-router-dom";
 import { LocalForm, Control, Errors } from "react-redux-form";
-import { Loading } from './LoadingComponent';
+import { Loading } from "./LoadingComponent";
 import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Stagger } from "react-animation-components";
 
-
-// for validation of form 
+// for validation of form
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !val || val.length <= len;
 const minLength = (len) => (val) => val && val.length >= len;
 
-
 function RenderDish({ dish }) {
   return (
     <div className="col-12 col-md-5 m-1">
-      <Card>
-        <CardImg width="100%" src={baseUrl +dish.image} alt={dish.name} />
-        <CardBody>
-          <CardTitle>{dish.name}</CardTitle>
-          <CardText>{dish.description}</CardText>
-        </CardBody>
-      </Card>
+      <FadeTransform
+        in
+        transfromProps={{
+          exitTransform: "scale(0.5) translateY(-50%) ",
+        }}
+      >
+        <Card>
+          <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name} />
+          <CardBody>
+            <CardTitle>{dish.name}</CardTitle>
+            <CardText>{dish.description}</CardText>
+          </CardBody>
+        </Card>
+      </FadeTransform>
     </div>
   );
 }
 class CommentForm extends Component {
-
   constructor(props) {
     super(props);
     //helps in maintianing state of the model
@@ -54,13 +60,18 @@ class CommentForm extends Component {
   }
 
   handleSubmit(values) {
-    this.props.postComment(this.props.dishId,values.rating,values.author,values.comment)
-    }
+    this.props.postComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
+  }
 
   toggleModal() {
-    this.setState({ 
-      isModalOpen: !this.state.isModalOpen
-     });
+    this.setState({
+      isModalOpen: !this.state.isModalOpen,
+    });
   }
 
   render() {
@@ -81,12 +92,12 @@ class CommentForm extends Component {
                 </Label>
                 <Col md={10}>
                   <Control.select
-                    defaultValue = "1"  // Note the default value
+                    defaultValue="1" // Note the default value
                     model=".ratings"
                     name="rating"
                     className="form-control"
                   >
-                    <option >1</option>
+                    <option>1</option>
                     <option>2</option>
                     <option>3</option>
                     <option>4</option>
@@ -138,7 +149,7 @@ class CommentForm extends Component {
                 </Col>
               </Row>
               <Row className="form-group">
-                <Col md={ { size: 10, offset: 2 }}>
+                <Col md={{ size: 10, offset: 2 }}>
                   <Button type="submit" color="primary">
                     Submit
                   </Button>
@@ -157,50 +168,51 @@ function RenderComments({ comments, postComment, dishId }) {
   }
   const cmnts = comments.map((comment) => {
     return (
-      <li key={comment.id}>
-        <p>{comment.comment}</p>
-        <p>
-          -- {comment.author}, &nbsp;
-          {new Intl.DateTimeFormat("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "2-digit",
-          }).format(new Date(comment.date))}
-        </p>
-      </li>
+      <Fade in key={comment.id}>
+        <li key={comment.id}>
+          <p>{comment.comment}</p>
+          <p>
+            -- {comment.author}, &nbsp;
+            {new Intl.DateTimeFormat("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "2-digit",
+            }).format(new Date(comment.date))}
+          </p>
+        </li>
+      </Fade>
     );
   });
   return (
     <div className="col-12 col-md-5 m-1">
       <h4> Comments </h4>
-      <ul className="list-unstyled">{cmnts}</ul>
-      <CommentForm dishId = {dishId} postComment = {postComment}/>
+      <ul className="list-unstyled">
+        <Stagger in>{cmnts}</Stagger>
+      </ul>
+      <CommentForm dishId={dishId} postComment={postComment} />
     </div>
   );
 }
 
-
 const Dishdetail = (props) => {
   const selectedDish = props.selectedDish;
-  if(props.isLoading) {
-    return(
-      <div className = "container">
-        <div className = "row">
+  if (props.isLoading) {
+    return (
+      <div className="container">
+        <div className="row">
           <Loading />
         </div>
       </div>
     );
-  }
-  else if(props.errMess) {
-    return(
-      <div className = "container">
-        <div className = "row">
+  } else if (props.errMess) {
+    return (
+      <div className="container">
+        <div className="row">
           <h4>{props.errMess}</h4>
         </div>
       </div>
     );
-  }
-  else if (selectedDish == null) {
+  } else if (selectedDish == null) {
     return <div></div>;
   }
 
@@ -220,9 +232,11 @@ const Dishdetail = (props) => {
       </div>
       <div className="row">
         <RenderDish dish={props.selectedDish} />
-        <RenderComments comments={props.comments} 
-        postComment={props.postComment}
-        dishId = {props.selectedDish.id}/>
+        <RenderComments
+          comments={props.comments}
+          postComment={props.postComment}
+          dishId={props.selectedDish.id}
+        />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import Contact from './ContactComponent';
 import About from './AboutComponent';
 import { postComment,fetchDishes, fetchComments, fetchPromos } from '../redux/ActionCreators';
 import {actions} from 'react-redux-form'
-
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 // TODO :
 const mapStateToProps = state => {
@@ -79,6 +79,8 @@ class Main extends Component {
         return (
             <div>
                 <Header />
+                <TransitionGroup>
+                <CSSTransition key = {this.props.location.key} classNames = "page" timeout = {300} >
                 {/* A <Switch> looks through its children <Route>s and renders the first one that matches the current URL. */}
                 <Switch>
                     {/* since calling Home component here directly is too long so we used sfunctions*/}
@@ -94,6 +96,8 @@ class Main extends Component {
                     {/* Otherwise will redirect to home Componet or will redirect to /home */}
                     <Redirect to="/home" />
                 </Switch>
+                </CSSTransition>
+                </TransitionGroup>
                 <Footer />
             </div>
         );
