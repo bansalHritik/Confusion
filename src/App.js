@@ -10,10 +10,10 @@ import { Provider } from "react-redux";
 // good defaults to the store setup for a better development experience.
 import { ConfigureStore } from "./redux/configureStore";
 
+//this will create new store for the app
 const store = ConfigureStore();
 class App extends Component {
   // since we dont want any state of app components so no constructor
-
   render() {
     return (
       <Provider store={store}> 
