@@ -1,29 +1,29 @@
 import React, { Component } from "react";
 import "./App.css";
 import Main from "./components/MainComponent";
-//used to route
-import { BrowserRouter } from "react-router-dom";
-// The <Provider /> makes the Redux store available to any nested components 
-// that have been wrapped in the connect() function.
-import { Provider } from "react-redux";
-// A friendly abstraction over the standard Redux createStore function that adds
-// good defaults to the store setup for a better development experience.
-import { ConfigureStore } from "./redux/configureStore";
 
-//this will create new store for the app
+import { BrowserRouter } from "react-router-dom"; // used to route
+import { Provider } from "react-redux";
+import { ConfigureStore } from "./redux/configureStore"; // importing our configured store
+
+//this will create new store for the app that is defined by us already
 const store = ConfigureStore();
+/** */
 class App extends Component {
   // since we dont want any state of app components so no constructor
   render() {
     return (
-      <Provider store={store}> 
+      /**
+       * The <Provider /> makes the Redux store available to any nested components
+       * that have been wrapped in the connect() function.
+       */
+      <Provider store={store}>
         {/**Alias for Router and parent of all Route components
          * NOTE : It has only one child and it must be parent of all and has only one child*/}
         <BrowserRouter>
           <div className="App">
-            {/**  */}
+            {/** When main is called then it'll be connected to the store and all its props are mapped*/}
             <Main />
-            {/* We will call the main component just like main method */}
           </div>
         </BrowserRouter>
       </Provider>

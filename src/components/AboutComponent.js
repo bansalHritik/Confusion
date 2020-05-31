@@ -35,11 +35,14 @@ function About(props) {
       </div>
     );
   }
+
   /**
-   * 
-   * this will take three arguments
+   * This component renders a list of leaders with some animation
+   *
+   * @param {*} { leaders, leadersLoading, leadersErrMess } self explanatory
+   * @returns list of Leaders
    */
-  function LoadLeader({ leaders, leadersLoading, leadersErrMess }) {
+  function LoadLeaders({ leaders, leadersLoading, leadersErrMess }) {
     if (leadersLoading) {
       return <Loading />;
     } else if (leadersErrMess) {
@@ -47,9 +50,9 @@ function About(props) {
     } else
       return (
         <div>
-        {/*Since it is a list */}
+          {/*Since it is a list */}
           <ul className="list-unstyled">
-          {/* for animation*/ }
+            {/* for animation*/}
             <Stagger in>
               {leaders.leaders.map((leader) => {
                 return (
@@ -97,7 +100,7 @@ function About(props) {
             will arrive on your plate the next time you visit us.
           </p>
           <p>
-            The restaurant traces its humble beginnings to{" "}
+            The restaurant traces its humble beginnings to
             <em>The Frying Pan</em>, a successful chain started by our CEO, Mr.
             Peter Pan, that featured for the first time the world's best
             cuisines in a pan.
@@ -148,7 +151,7 @@ function About(props) {
         </div>
         <div className="col-12">
           <Media list>
-            <LoadLeader
+            <LoadLeaders
               leaders={props.leaders}
               leadersLoading={props.leaders.isLoading}
               leaderErrMess={props.leaders.errMess}

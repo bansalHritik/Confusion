@@ -30,8 +30,7 @@ const minLength = (len) => (val) => val && val.length >= len;
 function RenderDish({ dish }) {
   return (
     <div className="col-12 col-md-5 m-1">
-      <FadeTransform
-        in
+      <FadeTransform in
         transfromProps={{
           exitTransform: "scale(0.5) translateY(-50%) ",
         }}
@@ -50,7 +49,7 @@ function RenderDish({ dish }) {
 class CommentForm extends Component {
   constructor(props) {
     super(props);
-    //helps in maintianing state of the model
+    //helps in maintaining state of the model
     this.state = {
       isModalOpen: false,
     };
@@ -66,6 +65,7 @@ class CommentForm extends Component {
       values.author,
       values.comment
     );
+    this.toggleModal();
   }
 
   toggleModal() {
@@ -162,6 +162,7 @@ class CommentForm extends Component {
     );
   }
 }
+
 function RenderComments({ comments, postComment, dishId }) {
   if (comments == null) {
     return <div></div>;

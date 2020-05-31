@@ -1,10 +1,14 @@
 import * as ActionTypes from "./ActionTypes";
 
+
+// reducer 
 export const Dishes = (
   state = { isLoading: true, errMess: null, dishes: [] },
   action
 ) => {
   switch (action.type) {
+    // ... means spread operator, it appends all the properties of tailing object , then properties that we want to 
+    // change will override the pervious one
     case ActionTypes.ADD_DISHES:
       return {
         ...state,

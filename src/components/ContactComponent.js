@@ -14,15 +14,14 @@ class Contact extends Component {
 
     constructor(props) {
         super(props);
-
         this.handleSubmit = this.handleSubmit.bind(this);   
     }
-    handleSubmit(values) {
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
-        this.props.resetFeedbackForm();
-        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message);    }
 
+    handleSubmit(values) {
+        alert('Current State is: ' + JSON.stringify(values));
+        this.props.resetFeedbackForm(); 
+        this.props.postFeedback(values.firstname, values.lastname, values.telnum, values.email, values.agree, values.contactType, values.message);    
+    }
     render(){
         
         return(
@@ -68,6 +67,8 @@ class Contact extends Component {
                       <h3>Send us your Feedback</h3>
                    </div>
                     <div className="col-12 col-md-9">
+                     {/* ? This is redux form */}
+
                         <Form model="feedback" onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
                                 <Label htmlFor="firstname" md={2}>First Name</Label>
